@@ -8,7 +8,7 @@ public class Dictionary implements Map {
     private int size;
 
     public Object put(Object key, Object value) {
-        int hash = Entry.calculateHash(key);
+        int hash = key.hashCode();
         int positiveHash = Math.abs(hash);
         int index = positiveHash % NUM_BUCKETS;
 
@@ -34,7 +34,7 @@ public class Dictionary implements Map {
     @Override
     public Object get(Object key) {
 
-        int hash = Entry.calculateHash(key);
+        int hash = key.hashCode();
         int positiveHash = Math.abs(hash);
         int index = positiveHash % NUM_BUCKETS;
 
@@ -61,8 +61,13 @@ public class Dictionary implements Map {
     @Override
     public boolean containsKey(Object key) {
         for (Entry e : data) {
-            if (e != null && e.key.equals(key))
-                return true;
+            if (e != null) {
+                while (e != null) {
+                    if (e.key.equals(key))
+                        return true;
+                    e = e.next;
+                }
+            }
         }
         return false;
     }
@@ -70,15 +75,20 @@ public class Dictionary implements Map {
     @Override
     public boolean containsValue(Object value) {
         for (Entry e : data) {
-            if (e != null && e.value.equals(value))
-                return true;
+            if (e != null) {
+                while (e != null) {
+                    if (e.value.equals(value))
+                        return true;
+                    e = e.next;
+                }
+            }
         }
         return false;
     }
 
     public Object remove(Object key) {
-        Object result = null;
-        int hash = Entry.calculateHash(key);
+        Object result;
+        int hash = key.hashCode();
         int positiveHash = Math.abs(hash);
         int index = positiveHash % NUM_BUCKETS;
         Entry head = data[index];
@@ -87,78 +97,41 @@ public class Dictionary implements Map {
             return null;
         }
 
-        if(head.key.equals(key)&&head.next == null){
-            data[index]=null;
+        if (head.key.equals(key) && head.next == null) {
+            data[index] = null;
             size--;
             return head.value;
         }
-        if(head.key.equals(key)&&head.next != null){
+        if (head.key.equals(key) && head.next != null) {
             result = head.value;
-            head= head.next;
+            data[index] = data[index].next;
             size--;
             return result;
         }
-//        Entry toRemove = null;
-//        while ((head != null)) {
-//            if (head.key.equals(key)) {
-//                toRemove = head;
-//            } else head = head.next;
-//            if(toRemove.equals(head)&&head.next == null){
-//                data[index] = null;
-//                return toRemove.value;
-//            }
-//            if(toRemove.equals(head)){
-//                head = head.next;
-//                data[index] = null;
-//                return toRemove.value;
-//            }
 
 
+        while ((head.next != null)) {
+            if (head.next.key.equals(key)) {
+                if (head.next.next == null) {
+                    result = head.next.value;
 
-//            return null;
-//        }
+                    head.next = null;
+                    size--;
 
+                    return result;
+                } else {
+                    result = head.next.value;
+                    head.next = head.next.next;
+                    size--;
 
+                    return result;
+                }
+            } else head = head.next;
+        }
 
-//        Entry current = data[index];
-//        while ((current != null)) {
-//            if (current.key.equals(key)) {
-//                return current;
-//            } else current = current.next;
-//        }
         return null;
     }
 
-    public Object removeEntry(Entry e) {
-
-
-        return null;
-
-    }
-
-//    @Override
-//    public Object remove(Object key) {
-//        Entry[] result = new Entry[NUM_BUCKETS];
-//        for (int i = 0; i < result.length; i++) {
-//            result[i] = data[i];
-//
-//        }
-//        size--;
-//        return null;
-
-
-//        if (containsKey(key)) {
-//            for (Entry e : data) {
-//                if (e != null && e.key.equals(key)) {
-//                    result = e.value;
-//                    removeEntry(key);
-//                    size--;
-//                    return result;
-//                }
-//            }
-//        }
-
-    //}
 
     @Override
     public void putAll(Map m) {
@@ -176,8 +149,10 @@ public class Dictionary implements Map {
         if (size != 0) {
             for (Entry e : data) {
                 if (e != null) {
-                    e = null;
-                    size--;
+                    while (e != null) {
+                        remove(e.getKey());
+                        e = e.next;
+                    }
                 }
             }
         }
@@ -188,7 +163,10 @@ public class Dictionary implements Map {
         Set result = new HashSet();
         for (Entry e : data) {
             if (e != null) {
-                result.add(e.key);
+                while (e != null) {
+                    result.add(e.key);
+                    e = e.next;
+                }
             }
         }
         return result;
@@ -199,7 +177,10 @@ public class Dictionary implements Map {
         Set result = new HashSet();
         for (Entry e : data) {
             if (e != null) {
-                result.add(e.value);
+                while (e != null) {
+                    result.add(e.value);
+                    e = e.next;
+                }
             }
         }
         return result;
@@ -249,25 +230,10 @@ public class Dictionary implements Map {
             return oldValue;
         }
 
-        public static int calculateHash(Object key){
-            String s = key.toString();
-            return s.length();
-
+        public String toString() {
+            return key + "=" + value;
         }
-        public  String toString() { return key + "=" + value; }
 
     }
 
-    public static void main(String[] args) {
-        Dictionary map = new Dictionary();
-        map.put(1,1);
-        map.put(2,2);
-        map.put(3,3);
-        map.clear();
-        System.out.println(map.entrySet());
-        System.out.println(map.get(3));
-        System.out.println(map.size());
-
-
-    }
 }

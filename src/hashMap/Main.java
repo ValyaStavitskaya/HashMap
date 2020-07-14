@@ -6,16 +6,22 @@ public class Main {
     public static void main(String[] args) {
 
         Dictionary map = new Dictionary();
-        map.put("Lala",1);
-        map.put("N",2);
-        map.put("ba",3);
-        map.put("na",9);
+//        System.out.println(16%16);
+//        System.out.println(32%16);
+        map.put(16,1);
+        map.put(2,2);
+        map.put(32,3);
+        map.put(4,4);
+        map.put(48,48);
         System.out.println(map.entrySet());
-        System.out.println(map.remove("na"));
+        System.out.println(map.size());
+        map.remove(32);
         System.out.println(map.entrySet());
-        System.out.println(map.containsKey("ba"));
-        System.out.println(map.containsValue("9"));
-        System.out.println(map.get("ba"));
+        System.out.println(map.containsKey(32));
+        System.out.println(map.keySet());
+        System.out.println(map.values());
+
+
 
 //        HashMap hashMap = new HashMap();
 //        System.out.println(map.entrySet());
