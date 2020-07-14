@@ -102,6 +102,7 @@ public class Dictionary implements Map {
             size--;
             return head.value;
         }
+
         if (head.key.equals(key) && head.next != null) {
             result = head.value;
             data[index] = data[index].next;
@@ -109,26 +110,22 @@ public class Dictionary implements Map {
             return result;
         }
 
-
         while ((head.next != null)) {
             if (head.next.key.equals(key)) {
+
                 if (head.next.next == null) {
                     result = head.next.value;
-
                     head.next = null;
                     size--;
-
                     return result;
                 } else {
                     result = head.next.value;
                     head.next = head.next.next;
                     size--;
-
                     return result;
                 }
             } else head = head.next;
         }
-
         return null;
     }
 
@@ -139,7 +136,6 @@ public class Dictionary implements Map {
         while (iterator.hasNext()) {
             Map.Entry pair = iterator.next();
             put(pair.getKey(), pair.getValue());
-
         }
     }
 
