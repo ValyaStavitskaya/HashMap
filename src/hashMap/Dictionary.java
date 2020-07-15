@@ -198,7 +198,7 @@ public class Dictionary implements Map {
     }
 
 
-    public static class Entry implements Map.Entry {
+    private static class Entry implements Map.Entry {
         Entry next;
         Object key;
         Object value;
