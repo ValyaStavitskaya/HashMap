@@ -4,8 +4,8 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        List<Integer> list = Arrays.asList(3,7,10,15);
-        int b = 13;
+        List<Integer> list = Arrays.asList(1, 9, 5, 3, 4, 2, 7);
+        int b = 5;
         System.out.println(getIndex(list, b));
 
     }
