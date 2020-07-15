@@ -1,29 +1,39 @@
 package home20;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        List list = Arrays.asList(1, 9, 5, 3, 4, 2, 7);
-        int b = 11;
+        List<Integer> list = Arrays.asList(3,7,10,15);
+        int b = 13;
         System.out.println(getIndex(list, b));
 
     }
 
     public static List getIndex(List<Integer> list, int b) {
-        if (list.size() > 1) {
-            int j = 1;
-            for (int i = 0; i < list.size(); i++) {
-                for (int k = j; k < list.size(); k++) {
-                    if ((list.get(i) + list.get(k)) == b)
-                        return Arrays.asList(i,k);
-                }
-                j++;
+        ArrayList<Integer> array = new ArrayList<>(list);
+        Collections.sort(array);
+        int first = 0;
+        int last = array.size() - 1;
+        int a;
+        int c;
+        while (first < last) {
+            int s = array.get(first) + array.get(last);
+            if (s == b){
+                 a = array.get(first);
+                 c = array.get(last);
+                return Arrays.asList(list.indexOf(a), list.indexOf(c));}
+            else {
+                if (s < b) first++;
+                else last--;
             }
         }
         return null;
+
     }
-
-
 }
+
+
+
+
+
